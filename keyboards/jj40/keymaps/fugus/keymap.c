@@ -2,13 +2,15 @@
 
 
 #define _QWERTY 0
-#define _LOWER  1
-#define _RAISE  2
-#define _NUMPAD 3
-#define _NAV 4
+#define _SPEED  1
+#define _LOWER  2
+#define _RAISE  3
+#define _NUMPAD 4
+#define _NAV 5
 
 enum custom_keycodes {
   QWERTY = SAFE_RANGE,
+  SPEED,
   LOWER,
   RAISE,
   NUMPAD,
@@ -17,26 +19,32 @@ enum custom_keycodes {
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 /* Qwerty
- * ,-----------------------------------------------------------------------------------------------.
- * | ESC      |   Q  |   W  |   E  |   R  |   T  |   Y  |   U   |   I  |   O  |   P  | Bksp        |
- * |----------+------+------+------+------+-------------+-------+------+------+------+-------------|
- * |(Nav)Tab  |   A  |   S  |   D  |   F  |   G  |   H  |   J   |   K  |   L  |   ;  |  "          |
- * |----------+------+------+------+------+------|------+-------+------+------+------+-------------|
- * | Shift    |   Z  |   X  |   C  |   V  |   B  |   N  |   M   |   ,  |   .  |   /  |(Shift) Enter|
- * |----------+------+------+------+------+------+------+-------+------+------+------+-------------|
- * | NUMPAD   | Ctrl | Alt  | GUI  |Lower |Space |Space | Raise |   ←  |   ↓  |   ↑  |   →         |
- * `-----------------------------------------------------------------------------------------------'
+ * ,-----------------------------------------------------------------------------------------------------------.
+ * |Shift/Esc |   Q  |   W  |   E  |   R  |   T        |   Y        |   U   |   I  |   O  |   P  | Shift/Bksp  |
+ * |----------+------+------+------+------+------------+------------+-------+------+------+------+-------------|
+ * |(Nav)Tab  |   A  |   S  |   D  |   F  |   G        |   H        |   J   |   K  |   L  |   ;  |  "          |
+ * |----------+------+------+------+------+------------+------------+-------+------+------+------+-------------|
+ * | Shift    |   Z  |   X  |   C  |   V  |   B        |   N        |   M   |   ,  |   .  |   /  |(Shift) Enter|
+ * |----------+------+------+------+------+------------+------------+-------+------+------+------+-------------|
+ * | NUMPAD   | Ctrl | Alt  | GUI  |Lower |Shift/Space |Shift/Space | Raise |   ←  |   ↓  |   ↑  |   →         |
+ * `-----------------------------------------------------------------------------------------------------------'
  */
 
 [_QWERTY] = LAYOUT_ortho_4x12( \
-  KC_ESC,  KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,    KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    KC_BSPC, \
+  LSFT_T(KC_ESC),  KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,    KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    LSFT_T(KC_BSPC), \
   LT(_NAV, KC_TAB),  KC_A,    KC_S,    KC_D,    KC_F,    KC_G,    KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, KC_QUOT, \
   KC_LSFT, KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, RSFT_T(KC_ENT), \
-  MO(_NUMPAD), KC_LCTL, KC_LALT, KC_LGUI, MO(_LOWER),  KC_SPC, KC_SPC, MO(_RAISE),   KC_LEFT, KC_DOWN, KC_UP,   KC_RGHT \
+  TT(_NUMPAD), KC_LCTL, KC_LALT, KC_LGUI, MO(_LOWER),  LSFT_T(KC_SPC), LSFT_T(KC_SPC), MO(_RAISE),   KC_LEFT, KC_DOWN, KC_UP,   KC_RGHT \
 ),
 
   /* TT(_NUMPAD), KC_LCTL, KC_LALT, KC_LGUI, MO(_LOWER),  KC_SPC, KC_SPC, MO(_RAISE),   KC_LEFT, KC_DOWN, KC_UP,   KC_RGHT \ */
   /* KC_LCTL, KC_LALT, KC_LGUI, KC_LSFT, MO(_LOWER),  KC_SPC, KC_SPC, MO(_RAISE),   KC_LEFT, KC_DOWN, KC_UP,   KC_RGHT \ */
+[_SPEED] = LAYOUT_ortho_4x12( \
+  _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,  \
+  _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,  \
+  _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,  \
+  _______, _______, _______, _______, _______, _______, KC_SPC, _______, _______, _______, _______, _______  \
+),
 
 /* Raise
  * ,-----------------------------------------------------------------------------------.
@@ -63,7 +71,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * ,-----------------------------------------------------------------------------------.
  * |   `  |   1  |   2  |   3  |   4  |   5  |   6  |   7  |   8  |   9  |   0  | Bksp |
  * |------+------+------+------+------+-------------+------+------+------+------+------|
- * | Del  |      |      |      |      |      |      |   (  |   )  |   [  |   ]  |      |
+ * | Del  |      |      |      |      |      |   :  |   (  |   )  |   [  |   ]  |  \   |
  * |------+------+------+------+------+------|------+------+------+------+------+------|
  * |      |      |      |      |      |      |      |   {  |   }  |      |      |      |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
@@ -74,8 +82,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 [_LOWER] = LAYOUT_ortho_4x12( \
   KC_GRV,  KC_1,    KC_2,    KC_3,    KC_4,    KC_5,    KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    _______, \
-  KC_DEL,  _______, _______, _______, _______, _______, _______, KC_LPRN, KC_RPRN, KC_LBRC, KC_RBRC, _______, \
-  _______, _______, _______, _______, _______, _______, _______, KC_LCBR, KC_RCBR, _______, _______, _______, \
+  KC_DEL,  _______, _______, _______, _______, _______, KC_COLN, KC_LPRN, KC_RPRN, KC_LBRC, KC_RBRC, KC_BSLS, \
+  _______, _______, _______, _______, _______, _______, _______, KC_LCBR, KC_RCBR, KC_LT, KC_GT, _______, \
   _______, _______, _______, _______, _______, _______, KC_EQUAL, KC_ENT, _______, _______, _______, _______ \
 ),
 
@@ -92,8 +100,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  */
 
 [_NAV] = LAYOUT_ortho_4x12( \
-  _______, _______, KC_TAB, KC_ENT, _______, _______, _______, _______, _______, _______, _______, KC_MUTE, \
-  _______, _______, KC_LGUI, KC_LALT, KC_LSFT, _______, KC_LEFT, KC_DOWN, KC_UP, KC_RGHT, _______, KC_VOLU, \
+  _______, KC_TAB, KC_ENT, _______, _______, _______, _______, _______, _______, _______, _______, KC_MUTE, \
+  _______, _______, KC_LGUI, KC_LALT, KC_RSFT, _______, KC_LEFT, KC_DOWN, KC_UP, KC_RGHT, _______, KC_VOLU, \
   _______, _______, _______, _______, _______, _______, _______, _______, KC_BTN1, KC_BTN2, _______, KC_VOLD, \
   _______, _______, _______, _______, _______, KC_ENT, KC_ENT, _______, KC_MS_L, KC_MS_D, KC_MS_U, KC_MS_R  \
 ),
@@ -111,7 +119,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  */
 
 [_NUMPAD] = LAYOUT_ortho_4x12( \
-  _______,RGB_TOG, RGB_HUD, RGB_HUI, _______, _______, KC_LPRN, KC_7, KC_8, KC_9, KC_RPRN, KC_BSPC, \
+  TG(_SPEED),RGB_TOG, RGB_HUD, RGB_HUI, _______, _______, KC_LPRN, KC_7, KC_8, KC_9, KC_RPRN, KC_BSPC, \
   _______,RGB_MOD, RGB_SAD, RGB_SAI, _______, _______, KC_MINS, KC_4, KC_5, KC_6, KC_PLUS, KC_ENT, \
   _______, _______, RGB_VAD, RGB_VAI, _______, _______, KC_SLSH , KC_1, KC_2, KC_3, KC_ASTR, KC_COMM, \
   _______, RGB_M_P, RGB_M_B, RGB_M_R, RGB_M_G, KC_SPC, KC_SPC, KC_0, KC_DOT, KC_EQL, _______, _______ \
