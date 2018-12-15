@@ -64,6 +64,7 @@ enum macro_keycodes {
 #define KC_SESC LSFT_T(KC_ESC)
 #define KC_SBSPC LSFT_T(KC_BSPC)
 #define KC_NAVT LT(_NAV, KC_TAB)
+#define KC_NAVQ LT(_NAV, KC_QUOT)
 #define KC_SENT RSFT_T(KC_ENT)
 
 #define KC_CTLZ CTL_T(KC_Z)
@@ -83,7 +84,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //,-----------d------------------------------.                ,-----------------------------------------.
       SESC ,     Q,     W,     E,     R,     T,                      Y,     U,     I,     O,     P, SBSPC,\
   //|------+------+------+------+------+------|                |------+------+------+------+------+------|
-      NAVT ,     A,     S,     D,     F,     G,                      H,     J,     K,     L,  SCLN,  QUOT,\
+      NAVT ,     A,     S,     D,     F,     G,                      H,     J,     K,     L,  SCLN,  NAVQ,\
   //|------+------+------+------+------+------|                |------+------+------+------+------+------|
        NUM ,  CTLZ,  ALTX,     C,     V,     B,                      N,     M,  COMM, ALTDT, CTLSH,  SENT,\
   //|------+------+------+------+------+------+------|  |------+------+------+------+------+------+------|
