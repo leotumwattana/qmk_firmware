@@ -36,7 +36,14 @@ enum custom_keycodes {
   NUM,
   ADJUST,
   BACKLIT,
-  RGBRST
+  RGBRST,
+
+  // Macros
+  ARROW,
+  PRNS,
+  CBRS,
+  BRCS,
+  ESCS,
 };
 
 enum macro_keycodes {
@@ -79,7 +86,16 @@ enum macro_keycodes {
 
 #define KC_MOOM LSFT(KC_ENT)
 
+// Macros
+#define KC_ARROW ARROW
+#define KC_PRNS PRNS
+#define KC_CBRS CBRS
+#define KC_BRCS BRCS
+#define KC_ESCS ESCS
+
+
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
+
   [_QWERTY] = LAYOUT_kc( \
   //,-----------d------------------------------.                ,-----------------------------------------.
       SESC ,     Q,     W,     E,     R,     T,                      Y,     U,     I,     O,     P, SBSPC,\
@@ -97,7 +113,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //,-----------------------------------------.                ,-----------------------------------------.
       GRV  ,     1,     2,     3,     4,     5,                      6,     7,     8,     9,     0, _____,\
   //|------+------+------+------+------+------|                |------+------+------+------+------+------|
-      DEL  , _____, _____, _____, _____, _____,                  COLN , LPRN , RPRN , LBRC , RBRC , BSLS ,\
+      DEL  , ARROW, PRNS , CBRS , BRCS , ESCS ,                  COLN , LPRN , RPRN , LBRC , RBRC , BSLS ,\
   //|------+------+------+------+------+------|                |------+------+------+------+------+------|
       _____, _____, _____, _____, _____, _____,                  _____, LCBR , RCBR , LT   , GT   , _____,\
   //|------+------+------+------+------+------+------|  |------+------+------+------+------+------+------|
@@ -278,6 +294,41 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
           RGB_current_mode = rgblight_config.mode;
         }
       #endif
+      break;
+    case ARROW:
+      if (record->event.pressed) {
+        // when keycode ARROW is pressed
+        SEND_STRING("->");
+      }
+      break;
+    case PRNS:
+      if (record->event.pressed) {
+        // when keycode ARROW is pressed
+        SEND_STRING("()");
+        SEND_STRING(SS_TAP(X_LEFT));
+      }
+      break;
+    case CBRS:
+      if (record->event.pressed) {
+        // when keycode ARROW is pressed
+        SEND_STRING("{}");
+        SEND_STRING(SS_TAP(X_LEFT));
+        SEND_STRING("\n");
+      }
+      break;
+    case BRCS:
+      if (record->event.pressed) {
+        // when keycode ARROW is pressed
+        SEND_STRING("[]");
+        SEND_STRING(SS_TAP(X_LEFT));
+      }
+      break;
+    case ESCS:
+      if (record->event.pressed) {
+        // when keycode ARROW is pressed
+        SEND_STRING("\\()");
+        SEND_STRING(SS_TAP(X_LEFT));
+      }
       break;
   }
   return true;
