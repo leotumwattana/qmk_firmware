@@ -130,7 +130,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //|------+------+------+------+------+------|                |------+------+------+------+------+------|
       _____, PLUS , MINS , ASTR , _____, _____,                  _____, PLUS , MINS , UNDS , SLSH , _____,\
   //|------+------+------+------+------+------+------|  |------+------+------+------+------+------+------|
-                                  _____, ENT  , BSPC ,    _____, _____, _____ \
+                                  _____, ENT  ,  DEL ,    _____, _____, _____ \
                               //`--------------------'  `--------------------'
   ),
 
@@ -191,14 +191,15 @@ void matrix_init_user(void) {
 // When add source files to SRC in rules.mk, you can use functions.
 const char *read_layer_state(void);
 const char *read_logo(void);
-void set_keylog(uint16_t keycode, keyrecord_t *record);
-const char *read_keylog(void);
-const char *read_keylogs(void);
+const char *read_rgb_info(void);
+// void set_keylog(uint16_t keycode, keyrecord_t *record);
+// const char *read_keylog(void);
+// const char *read_keylogs(void);
 
 // const char *read_mode_icon(bool swap);
 // const char *read_host_led_state(void);
-// void set_timelog(void);
-// const char *read_timelog(void);
+void set_timelog(void);
+const char *read_timelog(void);
 
 void matrix_scan_user(void) {
    iota_gfx_task();
@@ -210,9 +211,10 @@ void matrix_render_user(struct CharacterMatrix *matrix) {
     matrix_write_ln(matrix, read_layer_state());
     // matrix_write_ln(matrix, read_keylog());
     // matrix_write_ln(matrix, read_keylogs());
-    //matrix_write_ln(matrix, read_mode_icon(keymap_config.swap_lalt_lgui));
+    // matrix_write_ln(matrix, read_mode_icon(keymap_config.swap_lalt_lgui));
     // matrix_write_ln(matrix, read_host_led_state());
-    // matrix_write_ln(matrix, read_timelog());
+    matrix_write_ln(matrix, read_rgb_info());
+    matrix_write_ln(matrix, read_timelog());
   } else {
     matrix_write(matrix, read_logo());
   }
@@ -235,10 +237,10 @@ void iota_gfx_task_user(void) {
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   if (record->event.pressed) {
-#ifdef SSD1306OLED
-    set_keylog(keycode, record);
-#endif
-    // set_timelog();
+// #ifdef SSD1306OLED
+    // set_keylog(keycode, record);
+// #endif
+    set_timelog();
   }
 
   switch (keycode) {
@@ -300,6 +302,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         // when keycode ARROW is pressed
         SEND_STRING("->");
       }
+      return false;
       break;
     case PRNS:
       if (record->event.pressed) {
@@ -307,14 +310,16 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         SEND_STRING("()");
         SEND_STRING(SS_TAP(X_LEFT));
       }
+      return false;
       break;
     case CBRS:
       if (record->event.pressed) {
         // when keycode ARROW is pressed
         SEND_STRING("{}");
         SEND_STRING(SS_TAP(X_LEFT));
-        SEND_STRING("\n");
+        // SEND_STRING("\n");
       }
+      return false;
       break;
     case BRCS:
       if (record->event.pressed) {
@@ -322,6 +327,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         SEND_STRING("[]");
         SEND_STRING(SS_TAP(X_LEFT));
       }
+      return false;
       break;
     case ESCS:
       if (record->event.pressed) {
@@ -329,6 +335,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         SEND_STRING("\\()");
         SEND_STRING(SS_TAP(X_LEFT));
       }
+      return false;
       break;
   }
   return true;
