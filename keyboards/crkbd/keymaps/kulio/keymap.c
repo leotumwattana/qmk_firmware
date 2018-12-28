@@ -306,7 +306,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       break;
     case PRNS:
       if (record->event.pressed) {
-        // when keycode ARROW is pressed
+        // when keycode PRNS is pressed
         SEND_STRING("()");
         SEND_STRING(SS_TAP(X_LEFT));
       }
@@ -314,7 +314,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       break;
     case CBRS:
       if (record->event.pressed) {
-        // when keycode ARROW is pressed
+        // when keycode CBRS is pressed
         SEND_STRING("{}");
         SEND_STRING(SS_TAP(X_LEFT));
         // SEND_STRING("\n");
@@ -323,7 +323,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       break;
     case BRCS:
       if (record->event.pressed) {
-        // when keycode ARROW is pressed
+        // when keycode BRCS is pressed
         SEND_STRING("[]");
         SEND_STRING(SS_TAP(X_LEFT));
       }
@@ -331,7 +331,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       break;
     case ESCS:
       if (record->event.pressed) {
-        // when keycode ARROW is pressed
+        // when keycode ESCS is pressed
         SEND_STRING("\\()");
         SEND_STRING(SS_TAP(X_LEFT));
       }
