@@ -35,6 +35,7 @@ enum custom_keycodes {
   NAV,
   NUM,
   ADJUST,
+
   BACKLIT,
   RGBRST,
 
@@ -44,11 +45,16 @@ enum custom_keycodes {
   CBRS,
   BRCS,
   ESCS,
+
+  // Dynamic Macro Support
+  DYNAMIC_MACRO_RANGE,
 };
 
 enum macro_keycodes {
   KC_SAMPLEMACRO,
 };
+
+#include "dynamic_macro.h"
 
 #define KC______ KC_TRNS
 #define KC_XXXXX KC_NO
@@ -63,7 +69,7 @@ enum macro_keycodes {
 #define KC_LSAD  RGB_SAD
 #define KC_LVAI  RGB_VAI
 #define KC_LVAD  RGB_VAD
-#define KC_LSMOD RGB_SMOD
+#define KC_LSMOD RGB_MOD
 #define KC_CTLTB CTL_T(KC_TAB)
 #define KC_GUIEI GUI_T(KC_LANG2)
 #define KC_ALTKN ALT_T(KC_LANG1)
@@ -76,15 +82,30 @@ enum macro_keycodes {
 
 #define KC_CTLZ CTL_T(KC_Z)
 #define KC_ALTX ALT_T(KC_X)
+#define KC_CTLA CTL_T(KC_A)
+#define KC_ALTS ALT_T(KC_S)
+
 #define KC_CTLSH CTL_T(KC_SLSH)
 #define KC_ALTDT ALT_T(KC_DOT)
 
-#define KC_NUM TT(_NUM)
+#define KC_NUM MO(_NUM)
 #define KC_XCNEXT LCTL(KC_GRV)
 #define KC_XCPREV LCTL(LSFT(KC_GRV))
 #define KC_XCJUMP LCTL(KC_6)
 
+#define KC_ADJENT LT(_ADJUST, KC_ENT)
+
 #define KC_MOOM LSFT(KC_ENT)
+#define KC_ADJT MO(_ADJUST)
+
+#define KC_SHZ S(KC_Z)
+#define KC_SHX S(KC_X)
+#define KC_SHC S(KC_C)
+#define KC_SHV S(KC_V)
+#define KC_SHB S(KC_B)
+#define KC_SHA S(KC_A)
+#define KC_SHS S(KC_S)
+#define KC_SHD S(KC_D)
 
 // Macros
 #define KC_ARROW ARROW
@@ -93,6 +114,13 @@ enum macro_keycodes {
 #define KC_BRCS BRCS
 #define KC_ESCS ESCS
 
+// Dynamic Macros
+#define KC_REC1 DYN_REC_START1
+#define KC_REC2 DYN_REC_START2
+#define KC_PLAY1 DYN_MACRO_PLAY1
+#define KC_PLAY2 DYN_MACRO_PLAY2
+#define KC_STOP DYN_REC_STOP
+
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
@@ -100,9 +128,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //,-----------d------------------------------.                ,-----------------------------------------.
       SESC ,     Q,     W,     E,     R,     T,                      Y,     U,     I,     O,     P, SBSPC,\
   //|------+------+------+------+------+------|                |------+------+------+------+------+------|
-      NAVT ,     A,     S,     D,     F,     G,                      H,     J,     K,     L,  SCLN,  NAVQ,\
+      NAVT ,  CTLA,  ALTS,     D,     F,     G,                      H,     J,     K,     L,  SCLN,  NAVQ,\
   //|------+------+------+------+------+------|                |------+------+------+------+------+------|
-       NUM ,  CTLZ,  ALTX,     C,     V,     B,                      N,     M,  COMM, ALTDT, CTLSH,  SENT,\
+       NUM ,     Z,     X,     C,     V,     B,                      N,     M,  COMM, ALTDT, CTLSH,ADJENT,\
   //|------+------+------+------+------+------+------|  |------+------+------+------+------+------+------|
                                   LGUI, LOWER,   SESC,      SPC, RAISE, RGUI \
                               //`--------------------'  `--------------------'
@@ -148,13 +176,25 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
   [_NUM] = LAYOUT_kc( \
   //,-----------------------------------------.                ,-----------------------------------------.
-      _____,  RST , LRST , _____, _____, _____,                  LPRN ,     7,     8,     9, RPRN , BSPC ,\
+      _____, _____, _____, _____, _____, _____,                  LPRN ,     7,     8,     9, RPRN , BSPC ,\
   //|------+------+------+------+------+------|                |------+------+------+------+------+------|
-      _____, LTOG , LHUI , LSAI , LVAI , _____,                  MINS ,     4,     5,     6, PLUS , ENT  ,\
+      _____, SHA  ,  SHS ,  SHD , _____, _____,                  MINS ,     4,     5,     6, PLUS , ENT  ,\
   //|------+------+------+------+------+------|                |------+------+------+------+------+------|
-      _____, LSMOD, LHUD , LSAD , LVAD, _____,                  SLSH ,     1,     2,     3, ASTR , COMM ,\
+      _____, SHZ  ,  SHX ,  SHC ,  SHV ,  SHB ,                  SLSH ,     1,     2,     3, ASTR , COMM ,\
   //|------+------+------+------+------+------+------|  |------+------+------+------+------+------+------|
                                  _____, _____, _____ ,   _____ ,     0,  DOT  \
+                              //`--------------------'  `--------------------'
+  ),
+
+  [_ADJUST] = LAYOUT_kc( \
+  //,-----------------------------------------.                ,-----------------------------------------.
+      _____,  RST , LRST , _____, _____, _____,                  _____, _____, _____, _____, _____, _____,\
+  //|------+------+------+------+------+------|                |------+------+------+------+------+------|
+      _____, LTOG , LHUI , LSAI , LVAI , _____,                  _____, PLAY1, PLAY2, _____, _____, _____,\
+  //|------+------+------+------+------+------|                |------+------+------+------+------+------|
+      _____, LSMOD, LHUD , LSAD , LVAD, _____,                   _____, REC1 , REC2 , _____, _____, _____,\
+  //|------+------+------+------+------+------+------|  |------+------+------+------+------+------+------|
+                                 _____, _____, _____ ,    STOP , _____, _____ \
                               //`--------------------'  `--------------------'
   ),
 };
@@ -236,6 +276,12 @@ void iota_gfx_task_user(void) {
 #endif//SSD1306OLED
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+
+  // Dynamic Macro
+  if (!process_record_dynamic_macro(keycode, record)) {
+    return false;
+  }
+
   if (record->event.pressed) {
 // #ifdef SSD1306OLED
     // set_keylog(keycode, record);
@@ -278,25 +324,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         }
         return false;
         break;
-    case RGB_MOD:
-      #ifdef RGBLIGHT_ENABLE
-        if (record->event.pressed) {
-          rgblight_mode(RGB_current_mode);
-          rgblight_step();
-          RGB_current_mode = rgblight_config.mode;
-        }
-      #endif
-      return false;
-      break;
-    case RGBRST:
-      #ifdef RGBLIGHT_ENABLE
-        if (record->event.pressed) {
-          eeconfig_update_rgblight_default();
-          rgblight_enable();
-          RGB_current_mode = rgblight_config.mode;
-        }
-      #endif
-      break;
     case ARROW:
       if (record->event.pressed) {
         // when keycode ARROW is pressed
@@ -340,4 +367,3 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   }
   return true;
 }
-
