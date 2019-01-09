@@ -86,7 +86,7 @@ enum macro_keycodes {
 #define KC_CTLSH CTL_T(KC_SLSH)
 #define KC_ALTDT ALT_T(KC_DOT)
 
-#define KC_NUM MO(_NUM)
+#define KC_NUM TT(_NUM)
 #define KC_XCNEXT LCTL(KC_GRV)
 #define KC_XCPREV LCTL(LSFT(KC_GRV))
 #define KC_XCJUMP LCTL(KC_6)
