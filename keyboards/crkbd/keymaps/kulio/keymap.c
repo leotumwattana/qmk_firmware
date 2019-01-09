@@ -80,10 +80,8 @@ enum macro_keycodes {
 #define KC_NAVQ LT(_NAV, KC_QUOT)
 #define KC_SENT RSFT_T(KC_ENT)
 
-#define KC_CTLZ CTL_T(KC_Z)
-#define KC_ALTX ALT_T(KC_X)
-#define KC_CTLA CTL_T(KC_A)
-#define KC_ALTS ALT_T(KC_S)
+#define KC_CTLX CTL_T(KC_X)
+#define KC_ALTC ALT_T(KC_C)
 
 #define KC_CTLSH CTL_T(KC_SLSH)
 #define KC_ALTDT ALT_T(KC_DOT)
@@ -128,9 +126,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //,-----------d------------------------------.                ,-----------------------------------------.
       SESC ,     Q,     W,     E,     R,     T,                      Y,     U,     I,     O,     P, SBSPC,\
   //|------+------+------+------+------+------|                |------+------+------+------+------+------|
-      NAVT ,  CTLA,  ALTS,     D,     F,     G,                      H,     J,     K,     L,  SCLN,  NAVQ,\
+      NAVT ,     A,     S,     D,     F,     G,                      H,     J,     K,     L,  SCLN,  NAVQ,\
   //|------+------+------+------+------+------|                |------+------+------+------+------+------|
-       NUM ,     Z,     X,     C,     V,     B,                      N,     M,  COMM, ALTDT, CTLSH,ADJENT,\
+       NUM ,     Z,  CTLX,  ALTC,     V,     B,                      N,     M,  COMM, ALTDT, CTLSH,ADJENT,\
   //|------+------+------+------+------+------+------|  |------+------+------+------+------+------+------|
                                   LGUI, LOWER,   SESC,      SPC, RAISE, RGUI \
                               //`--------------------'  `--------------------'
