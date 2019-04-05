@@ -27,6 +27,7 @@ extern uint8_t is_master;
 #define _NUM 3
 #define _NAV 4
 #define _ADJUST 5
+#define _SWAP 6
 
 enum custom_keycodes {
   QWERTY = SAFE_RANGE,
@@ -35,6 +36,7 @@ enum custom_keycodes {
   NAV,
   NUM,
   ADJUST,
+  SWAP,
 
   BACKLIT,
   RGBRST,
@@ -45,6 +47,7 @@ enum custom_keycodes {
   CBRS,
   BRCS,
   ESCS,
+  XCFIND,
 
   // Dynamic Macro Support
   DYNAMIC_MACRO_RANGE,
@@ -75,6 +78,7 @@ enum macro_keycodes {
 #define KC_ALTKN ALT_T(KC_LANG1)
 
 #define KC_SESC LSFT_T(KC_ESC)
+#define KC_SSPC LSFT_T(KC_SPC)
 #define KC_SBSPC LSFT_T(KC_BSPC)
 #define KC_NAVT LT(_NAV, KC_TAB)
 #define KC_NAVQ LT(_NAV, KC_QUOT)
@@ -86,10 +90,16 @@ enum macro_keycodes {
 #define KC_CTLSH CTL_T(KC_SLSH)
 #define KC_ALTDT ALT_T(KC_DOT)
 
-#define KC_NUM TT(_NUM)
+#define KC_NUM MO(_NUM)
+
+// Xcode
 #define KC_XCNEXT LCTL(KC_GRV)
 #define KC_XCPREV LCTL(LSFT(KC_GRV))
 #define KC_XCJUMP LCTL(KC_6)
+#define KC_XSCOPE LCTL(LGUI(KC_E))
+#define KC_XCUR   LCTL(KC_LSFT)
+
+#define KC_HELP LGUI(LSFT(KC_SLSH))
 
 #define KC_ADJENT LT(_ADJUST, KC_ENT)
 
@@ -119,6 +129,7 @@ enum macro_keycodes {
 #define KC_CBRS CBRS
 #define KC_BRCS BRCS
 #define KC_ESCS ESCS
+#define KC_XCFIND XCFIND
 
 // Dynamic Macros
 #define KC_REC1 DYN_REC_START1
@@ -127,11 +138,15 @@ enum macro_keycodes {
 #define KC_PLAY2 DYN_MACRO_PLAY2
 #define KC_STOP DYN_REC_STOP
 
+// Hand Swap
+#define KC_SWAP TG(_SWAP)
+#define KC_QWER DF(_QWERTY)
+
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
   [_QWERTY] = LAYOUT_kc( \
-  //,-----------d------------------------------.                ,-----------------------------------------.
+  //,------------------------------------------.                ,-----------------------------------------.
       SESC ,     Q,     W,     E,     R,     T,                      Y,     U,     I,     O,     P, SBSPC,\
   //|------+------+------+------+------+------|                |------+------+------+------+------+------|
       NAVT ,     A,     S,     D,     F,     G,                      H,     J,     K,     L,  SCLN,  NAVQ,\
@@ -170,13 +185,13 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
   [_NAV] = LAYOUT_kc( \
   //,-----------------------------------------.                ,-----------------------------------------.
-      _____, MOOM , _____, _____, _____, _____,                  SHY  , SHU  , SHI  , SHO  , SHP  , _____,\
+      _____, MOOM , _____, _____,XCFIND, _____,                  SHY  , SHU  , SHI  , SHO  , SHP  , _____,\
   //|------+------+------+------+------+------|                |------+------+------+------+------+------|
       _____, SHA  , SHS  , SHD  , SHF  , SHG  ,                  LEFT , DOWN , UP   , RGHT , _____, _____,\
   //|------+------+------+------+------+------|                |------+------+------+------+------+------|
-      _____, SHZ  , SHX  , SHC  , SHV  , SHB  ,                  _____,XCPREV,XCNEXT,XCJUMP, _____, _____,\
+      _____, SHZ  , SHX  , SHC  , SHV  , SHB  ,                 XSCOPE,XCPREV,XCNEXT,XCJUMP, HELP, _____,\
   //|------+------+------+------+------+------+------|  |------+------+------+------+------+------+------|
-                                 _____, _____, SPC   ,   ENT   , _____, _____ \
+                                 _____, XCUR  , SPC   ,   ENT  , _____, _____ \
                               //`--------------------'  `--------------------'
   ),
 
@@ -184,23 +199,34 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //,-----------------------------------------.                ,-----------------------------------------.
       _____, _____, _____, _____, _____, _____,                  LPRN ,     7,     8,     9, RPRN , BSPC ,\
   //|------+------+------+------+------+------|                |------+------+------+------+------+------|
-      _____, SHA  ,  SHS ,  SHD ,  SHF ,  SHG ,                  MINS ,     4,     5,     6, PLUS , ENT  ,\
+       SWAP, SHA  ,  SHS ,  SHD ,  SHF ,  SHG ,                  PLUS ,     4,     5,     6, ASTR , ENT  ,\
   //|------+------+------+------+------+------|                |------+------+------+------+------+------|
-      _____, SHZ  ,  SHX ,  SHC ,  SHV ,  SHB ,                  SLSH ,     1,     2,     3, ASTR , COMM ,\
+      _____, SHZ  ,  SHX ,  SHC ,  SHV ,  SHB ,                  MINS ,     1,     2,     3, SLSH , COMM ,\
   //|------+------+------+------+------+------+------|  |------+------+------+------+------+------+------|
                                  _____, _____, _____ ,   _____ ,     0,  DOT  \
                               //`--------------------'  `--------------------'
   ),
-
   [_ADJUST] = LAYOUT_kc( \
   //,-----------------------------------------.                ,-----------------------------------------.
       _____,  RST , LRST , _____, _____, _____,                  _____, _____, _____, _____, _____, MUTE ,\
   //|------+------+------+------+------+------|                |------+------+------+------+------+------|
       _____, LTOG , LHUI , LSAI , LVAI , _____,                  _____, PLAY1, PLAY2, _____, _____, VOLU ,\
   //|------+------+------+------+------+------|                |------+------+------+------+------+------|
-      _____, LSMOD, LHUD , LSAD , LVAD, _____,                   _____, REC1 , REC2 , _____, _____, VOLD ,\
+      _____, LSMOD, LHUD , LSAD , LVAD,  _____,                  _____, REC1 , REC2 , _____, _____, VOLD ,\
   //|------+------+------+------+------+------+------|  |------+------+------+------+------+------+------|
                                  _____, _____, _____ ,    STOP , _____, _____ \
+                              //`--------------------'  `--------------------'
+  ),
+
+  [_SWAP] = LAYOUT_kc( \
+  //,-----------------------------------------.                ,-----------------------------------------.
+      SBSPC,     P,     O,     I,     U,     Y,                  _____, _____, _____, _____, _____, _____,\
+  //|------+------+------+------+------+------|                |------+------+------+------+------+------|
+     ADJENT,  SCLN,     L,     K,     J,     H,                  _____, _____, _____, _____, _____, _____,\
+  //|------+------+------+------+------+------|                |------+------+------+------+------+------|
+      SWAP , CTLSH, ALTDT,  COMM,     M,     N,                  _____, _____, _____, _____, _____, _____,\
+  //|------+------+------+------+------+------+------|  |------+------+------+------+------+------+------|
+                                 _____, RAISE ,   SPC ,    _____, _____, _____ \
                               //`--------------------'  `--------------------'
   ),
 };
@@ -330,6 +356,15 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         }
         return false;
         break;
+    case RGBRST:
+      #ifdef RGBLIGHT_ENABLE
+        if (record->event.pressed) {
+          eeconfig_update_rgblight_default();
+          rgblight_enable();
+          RGB_current_mode = rgblight_config.mode;
+        }
+      #endif
+      break;
     case ARROW:
       if (record->event.pressed) {
         // when keycode ARROW is pressed
@@ -367,6 +402,16 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         // when keycode ESCS is pressed
         SEND_STRING("\\()");
         SEND_STRING(SS_TAP(X_LEFT));
+      }
+      return false;
+      break;
+    case XCFIND:
+      if (record->event.pressed) {
+        // when keycode XCFIND is pressed
+        SEND_STRING(SS_LGUI(SS_TAP(X_C)));
+        SEND_STRING(SS_LGUI(SS_LSFT(SS_TAP(X_F))));
+        SEND_STRING(SS_LGUI(SS_TAP(X_V)));
+        SEND_STRING(SS_TAP(X_ENTER));
       }
       return false;
       break;

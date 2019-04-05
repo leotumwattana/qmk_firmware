@@ -9,6 +9,8 @@
 #define L_NUM 8
 #define L_NAV 16
 #define L_ADJUST 32
+#define L_SWAP 64
+#define L_SWAP2 72
 #define L_ADJUST_TRI 65560
 
 char layer_state_str[24];
@@ -34,6 +36,10 @@ const char *read_layer_state(void) {
   case L_ADJUST:
     snprintf(layer_state_str, sizeof(layer_state_str), "Layer: Adjust");
     break;
+  case L_SWAP:
+  case L_SWAP2:
+    snprintf(layer_state_str, sizeof(layer_state_str), "Layer: Swap");
+    break;
   // case L_ADJUST_TRI:
   //   snprintf(layer_state_str, sizeof(layer_state_str), "Layer: Adjust");
   //   break;
@@ -43,3 +49,5 @@ const char *read_layer_state(void) {
 
   return layer_state_str;
 }
+
+
